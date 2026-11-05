@@ -1,0 +1,116 @@
+# Final Project 2: Heart Disease Analysis
+
+Author: Lauren McGarvey
+
+This project describes patients in the UCI Heart Disease (Cleveland) dataset and
+compares selected health characteristics (age, cholesterol, resting blood
+pressure, maximum heart rate) between patients with and without heart disease.
+
+## How to generate the final report
+
+Requirements: R with the packages `dplyr`, `ggplot2`, `knitr`, and `rmarkdown`
+(plus `make` and pandoc, which RStudio includes).
+
+From the **root of this repository**, run:
+
+```bash
+make report
+```
+
+This runs the analysis scripts in order and renders `report/final_report.html`.
+`make clean` removes all generated files.
+
+## Contents of the report
+
+`report/final_report.html` contains:
+
+- An introduction describing the data and the objectives
+- A summary table of patient counts by heart disease status
+- **Table 1**: patient characteristics by heart disease status
+- **Figure 1**: boxplot of age by heart disease status
+- Next steps for the final analysis
+
+## Where the code is
+
+| Item | Code that creates it | Output file |
+|------|----------------------|-------------|
+| **Table 1** (required table) | [`code/02_make_table.R`](code/02_make_table.R) | `output/table1.rds` |
+| **Figure 1** (required figure) | [`code/03_make_figure.R`](code/03_make_figure.R) | `output/figure1_age_boxplot.png` |
+
+The report (`report/final_report.Rmd`) only loads and displays these saved
+outputs; it does not contain the code that builds them.
+
+## Repository structure
+
+```
+.
+├── Makefile                      # rule for building the report (make report)
+├── README.md
+├── data/
+│   └── processed.cleveland.data  # data (see note below)
+├── code/
+│   ├── 00_get_real_data.R        # optional: download real UCI data
+│   ├── 01_clean_data.R           # add column names, create heart_disease variable
+│   ├── 02_make_table.R           # creates Table 1
+│   └── 03_make_figure.R          # creates Figure 1
+├── output/                       # generated tables/figures (created by make)
+└── report/
+    └── final_report.Rmd          # report source
+```
+
+## Data
+
+`data/processed.cleveland.data` has the same structure as the original UCI file
+(303 rows, 14 comma-separated columns with no header, `?` for missing values in
+`ca` and `thal`): `age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang,
+oldpeak, slope, ca, thal, num`.
+
+
+# Final Project 2: Heart Disease Analysis
+
+This project describes patients in the UCI Heart Disease (Cleveland) dataset and compares selected health characteristics (age, cholesterol, resting blood pressure, maximum heart rate) between patients with and without heart disease.
+
+# Generating the Final Report
+
+Requirements: R with the packages `dplyr`, `ggplot2`, `knitr`, and `rmarkdown`, plus `make` and pandoc (both included with RStudio's Terminal setup on most machines).
+
+From the root of this repository, run:
+
+```bash
+make report
+```
+
+This runs the three scripts in `code/` in order and then renders `report/final_report.html`. To delete all generated files, run `make clean`.
+
+# Data
+- raw Heart Disease (Cleveland) data from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/45/heart+disease)
+- 303 rows and 14 comma-separated columns with no header
+- columns are `age`, `sex`, `cp`, `trestbps`, `chol`, `fbs`, `restecg`, `thalach`, `exang`, `oldpeak`, `slope`, `ca`, `thal`, `num`
+- missing values in `ca` and `thal` are coded as `?`
+
+# Code Description
+
+`code/01_clean_data.R`
+- reads the raw data in `data/processed.cleveland.data`
+- adds descriptive column names
+- creates the two-level `heart_disease` variable from `num` (0 = "No heart disease", >0 = "Heart disease")
+- saves the cleaned data as `output/heart_clean.rds`
+
+`code/02_make_table.R` (**creates the required table**)
+- reads the cleaned data saved by `code/01_clean_data.R`
+- creates the overview table of patient counts and percentages by heart disease status
+- creates Table 1, the mean age, cholesterol, resting blood pressure, and maximum heart rate by heart disease status
+- saves the tables as `output/class_counts.rds` and `output/table1.rds`
+
+`code/03_make_figure.R` (**creates the required figure**)
+- reads the cleaned data saved by `code/01_clean_data.R`
+- makes Figure 1, a boxplot of age by heart disease status
+- saves the figure as `output/figure1_age_boxplot.png`
+
+`report/final_report.Rmd`
+- loads the tables and figure saved by the three scripts above
+- displays the overview table, Table 1, and Figure 1 with short descriptions
+- renders to `report/final_report.html`
+
+`Makefile`
+- contains the rules that run each script in order and build the final report

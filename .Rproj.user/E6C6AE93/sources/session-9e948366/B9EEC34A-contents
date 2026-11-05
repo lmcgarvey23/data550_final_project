@@ -1,0 +1,13 @@
+# Reads the raw data, adds variable names, creates the heart_disease indicator,
+# and saves the cleaned data to output/heart_clean.rds
+library(dplyr)
+
+heart <- read.csv("data/processed.cleveland.data", header = FALSE)
+
+names(heart) <- c("age", "sex", "cp", "trestbps", "chol", "fbs", "restecg",
+                  "thalach", "exang", "oldpeak", "slope", "ca", "thal", "num")
+
+heart <- heart %>%
+  mutate(heart_disease = ifelse(num == 0, "No heart disease", "Heart disease"))
+
+saveRDS(heart, "output/heart_clean.rds")

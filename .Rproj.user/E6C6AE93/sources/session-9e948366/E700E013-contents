@@ -1,0 +1,22 @@
+# REQUIRED TABLE: Table 1, patient characteristics by heart disease status.
+# Also creates the overview count table. Saves to output/*.rds
+library(dplyr)
+
+heart <- readRDS("output/heart_clean.rds")
+
+class_counts <- heart %>%
+  count(heart_disease) %>%
+  mutate(percent = round(100 * n / sum(n), 1))
+
+table1 <- heart %>%
+  group_by(heart_disease) %>%
+  summarise(
+    N = n(),
+    Mean_age = round(mean(age, na.rm = TRUE), 1),
+    Mean_cholesterol = round(mean(chol, na.rm = TRUE), 1),
+    Mean_blood_pressure = round(mean(trestbps, na.rm = TRUE), 1),
+    Mean_max_heart_rate = round(mean(thalach, na.rm = TRUE), 1)
+  )
+
+saveRDS(class_counts, "output/class_counts.rds")
+saveRDS(table1, "output/table1.rds")

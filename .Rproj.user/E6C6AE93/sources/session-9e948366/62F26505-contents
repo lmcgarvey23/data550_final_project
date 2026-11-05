@@ -1,0 +1,138 @@
+---
+title: "Final Project 2: Heart Disease Analysis"
+author: "Lauren McGarvey"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Introduction
+
+## The Data
+The data used in this project come from the Heart Disease dataset available through the UCI Machine Learning Repository. The dataset contains information on 303 patients, including demographic and health-related characteristics such as age, sex, chest pain type, resting blood pressure, cholesterol, maximum heart rate, and heart disease status. The goal of this analysis is to describe the characteristics of the patients in the dataset and examine how selected health characteristics differ between patients with and without heart disease. I will use descriptive statistics and visualizations to explore the data.
+
+## Objectives
+The objectives of this analysis are to:
+1. Load and inspect the Heart Disease dataset.
+2. Describe the characteristics of patients with and without heart disease.
+3. Compare selected health characteristics between the two groups.
+4. Visualize differences in age by heart disease status.
+
+# Load Packages
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(knitr)
+```
+
+# Load and Prepare the Data
+The Heart Disease data are loaded from the UCI Machine Learning Repository. The original dataset does not include column names, so descriptive variable names are added after the data are loaded.
+
+```{r, message=FALSE, warning=FALSE}
+#load the data
+heart <- read.csv(
+  "https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.cleveland.data",
+  header = FALSE
+)
+
+#add variable names
+names(heart) <- c(
+  "age",
+  "sex",
+  "cp",
+  "trestbps",
+  "chol",
+  "fbs",
+  "restecg",
+  "thalach",
+  "exang",
+  "oldpeak",
+  "slope",
+  "ca",
+  "thal",
+  "num"
+)
+```
+
+The `num` variable indicates the presence and severity of heart disease. A value of 0 indicates no heart disease, while values greater than 0 indicate the presence of heart disease. For this analysis, the variable is converted into a two-level indicator of heart disease status.
+
+```{r}
+heart <- heart %>%
+  mutate(
+    heart_disease = ifelse(
+      num == 0,
+      "No heart disease",
+      "Heart disease"
+    )
+  )
+```
+
+# Data Overview
+
+The following code provides a basic overview summary table of the number of patients in each heart disease group along with the percentage in each group.
+
+```{r}
+class_counts <- heart %>%
+  count(heart_disease) %>%
+  mutate(
+    percent = round(100 * n / sum(n), 1)
+  )
+
+kable(
+  class_counts,
+  col.names = c(
+    "Heart Disease Status",
+    "Count",
+    "Percent (%)"
+  ),
+  caption = "Number of Patients by Heart Disease Status"
+)
+```
+
+#Table 1: Patient Characteristics by Heart Disease Status
+```{r}
+table1 <- heart %>%
+  group_by(heart_disease) %>%
+  summarise(
+    N = n(),
+    Mean_age = round(mean(age, na.rm = TRUE), 1),
+    Mean_cholesterol = round(mean(chol, na.rm = TRUE), 1),
+    Mean_blood_pressure = round(mean(trestbps, na.rm = TRUE), 1),
+    Mean_max_heart_rate = round(mean(thalach, na.rm = TRUE), 1)
+  )
+
+kable(
+  table1,
+  col.names = c(
+    "Heart Disease Status",
+    "N",
+    "Mean Age",
+    "Mean Cholesterol",
+    "Mean Blood Pressure",
+    "Mean Maximum Heart Rate"
+  ),
+  caption = "Patient Characteristics by Heart Disease Status"
+)
+```
+
+Table 1 summarizes the characteristics of patients with and without heart disease. The table includes the number of patients in each group and the mean age, cholesterol level, resting blood pressure, and maximum heart rate. These descriptive statistics allow for a comparison of selected health characteristics between the two groups.
+
+# Figure 1: Age by Heart Disease Status
+```{r}
+ggplot(heart, aes(
+    x = heart_disease,
+    y = age,
+    fill = heart_disease
+  )
+) +
+  geom_boxplot() +
+  labs(
+    title = "Age by Heart Disease Status",
+    x = "Heart Disease Status",
+    y = "Age (years)"
+  ) 
+```
+
+Figure 1 compares the distribution of age between patients with and without heart disease. The boxplots show the median and spread of age within each group, allowing the age distributions to be visually compared.
+
+# Next Steps
+For the final report, I plan to explore additional characteristics of the Heart Disease dataset and create additional visualizations to better understand differences between patients with and without heart disease. I may also conduct statistical analyses to examine which characteristics are associated with the presence of heart disease.

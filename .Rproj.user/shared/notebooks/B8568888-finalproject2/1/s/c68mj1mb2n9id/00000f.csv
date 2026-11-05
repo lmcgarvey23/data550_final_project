@@ -1,0 +1,4 @@
+"0","heart <- heart %>%"
+"0","  mutate("
+"0","    heart_disease = ifelse(num > 0, ""Heart disease"", ""No heart disease"")"
+"0","  )"

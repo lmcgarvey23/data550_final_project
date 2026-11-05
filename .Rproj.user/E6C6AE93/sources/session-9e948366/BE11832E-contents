@@ -1,0 +1,57 @@
+---
+title: "Final Project 2: Heart Disease Analysis"
+author: "Lauren McGarvey"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+# knit from the project root so paths like output/... resolve
+opts_knit$set(root.dir = normalizePath(".."))
+```
+
+# Introduction
+
+## The Data
+The data used in this project come from the Heart Disease dataset available through the UCI Machine Learning Repository. The dataset contains information on 303 patients, including demographic and health-related characteristics such as age, sex, chest pain type, resting blood pressure, cholesterol, maximum heart rate, and heart disease status. The goal of this analysis is to describe the characteristics of patients in the dataset and examine how selected health characteristics differ between patients with and without heart disease. I use descriptive statistics and visualizations to explore the data.
+
+The raw data are stored in `data/processed.cleveland.data`. The original dataset does not include column names, so descriptive names are added in `code/01_clean_data.R`. The `num` variable indicates the presence and severity of heart disease (0 = none, >0 = present); it is converted into a two-level indicator, `heart_disease`.
+
+## Objectives
+1. Load and inspect the Heart Disease dataset.
+2. Describe the characteristics of patients with and without heart disease.
+3. Compare selected health characteristics between the two groups.
+4. Visualize differences in age by heart disease status.
+
+# Data Overview
+
+```{r}
+class_counts <- readRDS("output/class_counts.rds")
+kable(class_counts,
+      col.names = c("Heart Disease Status", "Count", "Percent (%)"),
+      caption = "Number of Patients by Heart Disease Status")
+```
+
+# Table 1: Patient Characteristics by Heart Disease Status
+
+```{r}
+table1 <- readRDS("output/table1.rds")
+kable(table1,
+      col.names = c("Heart Disease Status", "N", "Mean Age", "Mean Cholesterol",
+                    "Mean Blood Pressure", "Mean Maximum Heart Rate"),
+      caption = "Patient Characteristics by Heart Disease Status")
+```
+
+Table 1 summarizes the characteristics of patients with and without heart disease: the number of patients in each group and the mean age, cholesterol level, resting blood pressure, and maximum heart rate.
+
+# Figure 1: Age by Heart Disease Status
+
+```{r}
+include_graphics("output/figure1_age_boxplot.png")
+```
+
+Figure 1 compares the distribution of age between patients with and without heart disease. The boxplots show the median and spread of age within each group.
+
+# Next Steps
+For the final report, I plan to explore additional characteristics of the dataset, create additional visualizations, and possibly conduct statistical analyses to examine which characteristics are associated with the presence of heart disease.

@@ -1,0 +1,71 @@
+# Final Project 2: Heart Disease Analysis
+
+Author: Lauren McGarvey
+
+This project describes patients in the UCI Heart Disease (Cleveland) dataset and
+compares selected health characteristics (age, cholesterol, resting blood
+pressure, maximum heart rate) between patients with and without heart disease.
+
+## How to generate the final report
+
+Requirements: R with the packages `dplyr`, `ggplot2`, `knitr`, and `rmarkdown`
+(plus `make` and pandoc, which RStudio includes).
+
+From the **root of this repository**, run:
+
+```bash
+make report
+```
+
+This runs the analysis scripts in order and renders `report/final_report.html`.
+`make clean` removes all generated files.
+
+## Contents of the report
+
+`report/final_report.html` contains:
+
+- An introduction describing the data and the objectives
+- A summary table of patient counts by heart disease status
+- **Table 1**: patient characteristics by heart disease status
+- **Figure 1**: boxplot of age by heart disease status
+- Next steps for the final analysis
+
+## Where the code is
+
+| Item | Code that creates it | Output file |
+|------|----------------------|-------------|
+| **Table 1** (required table) | [`code/02_make_table.R`](code/02_make_table.R) | `output/table1.rds` |
+| **Figure 1** (required figure) | [`code/03_make_figure.R`](code/03_make_figure.R) | `output/figure1_age_boxplot.png` |
+
+The report (`report/final_report.Rmd`) only loads and displays these saved
+outputs; it does not contain the code that builds them.
+
+## Repository structure
+
+```
+.
+├── Makefile                      # rule for building the report (make report)
+├── README.md
+├── data/
+│   └── processed.cleveland.data  # data (see note below)
+├── code/
+│   ├── 00_get_real_data.R        # optional: download real UCI data
+│   ├── 01_clean_data.R           # add column names, create heart_disease variable
+│   ├── 02_make_table.R           # creates Table 1
+│   └── 03_make_figure.R          # creates Figure 1
+├── output/                       # generated tables/figures (created by make)
+└── report/
+    └── final_report.Rmd          # report source
+```
+
+## Data
+
+`data/processed.cleveland.data` has the same structure as the original UCI file
+(303 rows, 14 comma-separated columns with no header, `?` for missing values in
+`ca` and `thal`): `age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang,
+oldpeak, slope, ca, thal, num`.
+
+> **Note:** The copy of the data in this repository is a **synthetic placeholder**
+> with made-up values and identical structure. To use the real public data from
+> the [UCI repository](https://archive.ics.uci.edu/dataset/45/heart+disease), run
+> `make real-data` and then `make report`.

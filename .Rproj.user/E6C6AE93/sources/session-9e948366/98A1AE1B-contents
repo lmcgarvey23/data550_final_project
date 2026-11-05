@@ -1,0 +1,4 @@
+# OPTIONAL: download the real UCI Cleveland Heart Disease data and overwrite
+# the copy in data/. Run with: make real-data
+url <- "https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.cleveland.data"
+download.file(url, destfile = "data/processed.cleveland.data", mode = "wb")

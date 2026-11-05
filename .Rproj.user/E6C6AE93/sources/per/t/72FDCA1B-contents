@@ -1,0 +1,71 @@
+---
+title: "Final Project 2: Heart Disease Analysis"
+author: "Lauren McGarvey"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Introduction
+
+The Heart Disease dataset from the UCI Machine Learning Repository contains information on 303 patients. The dataset includes demographic and health-related variables such as age, sex, chest pain type, resting blood pressure, cholesterol, maximum heart rate, and the presence of heart disease. The goal of this analysis is to describe the characteristics of the patients in the dataset and examine how selected health characteristics differ between patients with and without heart disease. I will use descriptive statistics and visualizations to explore the data.
+
+# Data
+```{r, message=FALSE, warning=FALSE}
+# Load packages
+library(dplyr)
+library(ggplot2)
+
+# Load the data
+heart <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.cleveland.data",
+                  header = FALSE)
+
+# Add variable names
+names(heart) <- c(
+  "age", "sex", "cp", "trestbps", "chol", "fbs",
+  "restecg", "thalach", "exang", "oldpeak",
+  "slope", "ca", "thal", "num"
+)
+
+# Look at the data
+head(heart)
+```
+
+# Analysis
+
+## Heart Disease Status
+```{r}
+heart <- heart %>%
+  mutate(
+    heart_disease = ifelse(num > 0, "Heart disease", "No heart disease")
+  )
+```
+
+## Patient Characteristics 
+```{r}
+table1 <- heart %>%
+  group_by(heart_disease) %>%
+  summarise(
+    N = n(),
+    Mean_age = round(mean(age, na.rm = TRUE), 1),
+    Mean_cholesterol = round(mean(chol, na.rm = TRUE), 1),
+    Mean_blood_pressure = round(mean(trestbps, na.rm = TRUE), 1),
+    Mean_max_heart_rate = round(mean(thalach, na.rm = TRUE), 1)
+  )
+
+table1
+```
+Table 1 summarizes the characteristics of patients with and without heart disease. The table includes the number of patients in each group and the mean age, cholesterol level, resting blood pressure, and maximum heart rate. These descriptive statistics allow us to compare the characteristics of the two groups.
+
+## Creating a figure
+```{r}
+ggplot(heart, aes(x = heart_disease, y = age)) +
+  geom_boxplot() +
+  labs(
+    title = "Age by Heart Disease Status",
+    x = "Heart Disease Status",
+    y = "Age (years)"
+  )
+```
+Figure 1 shows the distribution of age among patients with and without heart disease. The boxplot allows us to compare the median age and overall spread of age between the two groups.
+
+This analysis uses descriptive statistics and a visualization to examine characteristics of patients in the Heart Disease dataset. The results provide an initial look at how age, cholesterol, blood pressure, and maximum heart rate differ between patients with and without heart disease. Further analysis could examine whether these characteristics are statistically associated with the presence of heart disease.
