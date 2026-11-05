@@ -1,0 +1,6 @@
+"0","data <- readRDS (
+  file = here::here(""output/heart_clean.rds"")
+)
+"
+"2","Error in gzfile(file, ""rb"") : cannot open the connection
+"

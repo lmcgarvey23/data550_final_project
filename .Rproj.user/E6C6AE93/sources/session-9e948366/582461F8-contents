@@ -7,18 +7,13 @@ output: html_document
 
 ```{r setup, include=FALSE}
 library(knitr)
-root <- if (file.exists("output")) "." else ".."
-opts_knit$set(root.dir = normalizePath(root))
-library(dplyr)
-library(ggplot2)
+opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
 # Introduction
 
 ## The Data
 The data used in this project come from the Heart Disease dataset available through the UCI Machine Learning Repository. The dataset contains information on 303 patients, including demographic and health-related characteristics such as age, sex, chest pain type, resting blood pressure, cholesterol, maximum heart rate, and heart disease status. The goal of this analysis is to describe the characteristics of patients in the dataset and examine how selected health characteristics differ between patients with and without heart disease. I use descriptive statistics and visualizations to explore the data.
-
-The raw data are stored in `data/processed.cleveland.data`. The original dataset does not include column names, so descriptive names are added in `code/01_clean_data.R`. The `num` variable indicates the presence and severity of heart disease (0 = none, >0 = present); it is converted into a two-level indicator, `heart_disease`.
 
 ## Objectives
 1. Load and inspect the Heart Disease dataset.
@@ -27,21 +22,21 @@ The raw data are stored in `data/processed.cleveland.data`. The original dataset
 4. Visualize differences in age by heart disease status.
 
 # Data Overview
-```{r}
-class_counts <- readRDS("output/class_counts.rds")
-kable(class_counts,
-      col.names = c("Heart Disease Status", "Count", "Percent (%)"),
-      caption = "Number of Patients by Heart Disease Status")
+```{r, load-data}
+here::i_am("final_report.Rmd")
+
+data <- readRDS (
+  file = here::here("output/heart_clean.rds")
+)
 ```
 
 # Table 1: Patient Characteristics by Heart Disease Status
 
 ```{r}
-table1 <- readRDS("output/table1.rds")
-kable(table1,
-      col.names = c("Heart Disease Status", "N", "Mean Age", "Mean Cholesterol",
-                    "Mean Blood Pressure", "Mean Maximum Heart Rate"),
-      caption = "Patient Characteristics by Heart Disease Status")
+table1 <- readRDS(
+  file = here::here("output/table1.rds")
+)
+table1
 ```
 
 Table 1 summarizes the characteristics of patients with and without heart disease: the number of patients in each group and the mean age, cholesterol level, resting blood pressure, and maximum heart rate.

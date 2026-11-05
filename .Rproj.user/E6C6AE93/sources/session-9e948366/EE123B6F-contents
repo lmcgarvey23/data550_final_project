@@ -3,6 +3,7 @@
 here::i_am("code/02_make_table.R")
 
 library(dplyr)
+library(knitr)
 
 heart <- readRDS("output/heart_clean.rds")
 
@@ -20,5 +21,12 @@ table1 <- heart %>%
     Mean_max_heart_rate = round(mean(thalach, na.rm = TRUE), 1)
   )
 
+
+table1 <- kable(table1,
+      col.names = c("Heart Disease Status", "N", "Mean Age", "Mean Cholesterol",
+                    "Mean Blood Pressure", "Mean Maximum Heart Rate"),
+      caption = "Patient Characteristics by Heart Disease Status")
+
 saveRDS(class_counts, "output/class_counts.rds")
 saveRDS(table1, "output/table1.rds")
+

@@ -1,0 +1,3 @@
+"0","knitr::include_graphics("
+"0","  here::here(""output/figure1_age_boxplot.png"")"
+"0",")"

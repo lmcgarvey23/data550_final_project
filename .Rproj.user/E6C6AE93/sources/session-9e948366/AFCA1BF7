@@ -3,17 +3,17 @@
     "path": "~/Downloads/emory/YEAR 2/semester 1 (fall 2026)/DATA550/final/code/01_clean_data.R",
     "project_path": "code/01_clean_data.R",
     "type": "r_source",
-    "hash": "3939326099",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1793889720243.0,
     "source_on_save": false,
-    "relative_order": 9,
+    "relative_order": 6,
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "2,30",
-        "scrollLine": "0"
+        "cursorPosition": "40,0",
+        "scrollLine": "22"
     },
     "folds": "",
     "lastKnownWriteTime": 1793894882,
